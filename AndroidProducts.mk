@@ -15,9 +15,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_oscar.mk
+    $(LOCAL_DIR)/twrp_oscaro.mk
 
 COMMON_LUNCH_CHOICES := \
-    twrp_oscar-user \
-    twrp_oscar-userdebug \
-    twrp_oscar-eng
+    twrp_oscaro-user \
+    twrp_oscaro-userdebug \
+    twrp_oscaro-eng
