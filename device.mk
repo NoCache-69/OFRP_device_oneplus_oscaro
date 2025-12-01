@@ -35,7 +35,7 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 PRODUCT_PACKAGES += \
     bootctrl.holi.recovery \
     android.hardware.boot@1.1-impl-qti.recovery
-    
+
 PRODUCT_PACKAGES += \
     otapreopt_script \
     update_engine \
@@ -51,7 +51,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
 # fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
-    fastbootd    
+    fastbootd
 
 # qcom decryption
 PRODUCT_PACKAGES_ENG += \
@@ -76,6 +76,7 @@ PRODUCT_SOONG_NAMESPACES += \
 
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
+
 # Copy modules for depmod
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules)
 

@@ -18,11 +18,10 @@ DEVICE_PATH := device/oneplus/oscaro
 
 # Architecture
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a
+TARGET_ARCH_VARIANT := armv8-2a-dotprod
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := generic
-
+TARGET_CPU_VARIANT := cortex-a55
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
@@ -30,7 +29,6 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_BOARD_SUFFIX := _64
 TARGET_USES_64_BIT_BINDER := true
-
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 
@@ -46,33 +44,29 @@ TARGET_BOARD_PLATFORM := holi
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno619
 TARGET_USES_HARDWARE_QCOM_BOOTCTRL := true
 QCOM_BOARD_PLATFORMS += $(TARGET_BOARD_PLATFORM)
-
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0x04C8C000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=4e00000.dwc3 swiotlb=0 loop.max_part=7 cgroup.memory=nokmem,nosocket iptable_raw.raw_before_defrag=1 ip6table_raw.raw_before_defrag=1 kpti=off buildvariant=user androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0x04C8C000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=4e00000.dwc3 swiotlb=0 loop.max_part=7 cgroup.memory=nokmem,nosocket iptable_raw.raw_before_defrag=1 ip6table_raw.raw_before_defrag=1 kpti=off buildvariant=user androidboot.selinux=permissive androidboot.init_fatal_reboot_target=recovery ignore_builtin_recovery"
 BOARD_KERNEL_PAGESIZE := 4096
-BOARD_KERNEL_BASE          := 0x00000000
+BOARD_KERNEL_BASE := 0x00000000
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CLANG_COMPILE := true
 BOARD_KERNEL_IMAGE_NAME := kernel
 BOARD_BOOT_HEADER_VERSION := 3
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/$(PRODUCT_RELEASE_NAME)/kernel
-
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE) --board ""
 BOARD_MKBOOTIMG_ARGS += --cmdline "twrpfastboot=1"
-
+BOARD_RAMDISK_USE_LZ4 := true
+TARGET_KERNEL_SOURCE := kernel/oneplus/sm6375
+TARGET_KERNEL_CONFIG := vendor/holi-qgki_defconfig vendor/debugfs.config
+TARGET_KERNEL_NO_GCC := true
 
 # Kenel dtb
-
-
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/$(PRODUCT_RELEASE_NAME)/dtb
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
 # Kenel dtbo
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/$(PRODUCT_RELEASE_NAME)/dtbo.img
 BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_INCLUDE_RECOVERY_DTBO := true
-
 
 #A/B
 BOARD_USES_RECOVERY_AS_BOOT := true
@@ -101,10 +95,13 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 167772160
+BOARD_DTBOIMG_PARTITION_SIZE := 25165824
+BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 167772160
 
 # Dynamic Partition
 BOARD_SUPER_PARTITION_SIZE := 11190403072
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
+
 # BOARD_QTI_DYNAMIC_PARTITIONS_SIZ=BOARD_SUPER_PARTITION_SIZE - 4MB
 BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 5595201536
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
@@ -162,8 +159,8 @@ TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_RESETPROP := true
 
 #TWRP FRAMERATE
-TW_FRAMERATE := 60
-			     
+TW_FRAMERATE := 120
+
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
 TW_Y_OFFSET := 104
@@ -191,14 +188,10 @@ TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
 RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libion.so
-TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"    
+TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"
 TW_BACKUP_EXCLUSIONS := /data/fonts
 
 # Custom TWRP Versioning
 ifeq ($(TW_DEVICE_VERSION),)
 TW_DEVICE_VERSION=Stable_v1
 endif
-
-
-
-
